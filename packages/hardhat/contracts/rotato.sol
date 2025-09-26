@@ -283,10 +283,9 @@ contract ChitChainManager is IEntropyConsumer, ReentrancyGuard, Ownable, Pausabl
         uint128 fee = entropy.getFee(entropy.getDefaultProvider());
         require(msg.value >= fee, "Insufficient fee");
 
-        uint64 sequenceNumber = entropy.requestWithCallback{ value: fee }(
-            entropy.getDefaultProvider(),
-            uint64(block.timestamp + _schemeId + scheme.currentCycle)
-        );
+        bytes32 seed = keccak256(abi.encodePacked(block.timestamp, _schemeId, scheme.currentCycle));
+
+        uint64 sequenceNumber = entropy.requestWithCallback{ value: fee }(entropy.getDefaultProvider(), seed);
 
         cycle.entropySequenceNumber = sequenceNumber;
         entropyToScheme[sequenceNumber] = _schemeId;
