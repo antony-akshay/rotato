@@ -72,10 +72,10 @@ const CreatePage = () => {
         </div>
       </div>
       <BidModalDemo/>
-      <ChittySchemeCard/>
+      {/* <ChittySchemeCard/> */}
       <ChittyWinnerModalDemo/>
-      <JoinChittyCard chitty_name={""} owner={""} totalCycles={0} monthly_amount={0} contribute_amount={0} />
-      <PayChittyCard chitty_name={""} time_period={""} monthly_amount={0} contribute_amount={0} schemaId={""}/>
+      {/* <JoinChittyCard chitty_name={""} owner={""} totalCycles={0} monthly_amount={0} contribute_amount={0} /> */}
+      {/* <PayChittyCard chitty_name={""} time_period={""} monthly_amount={0} contribute_amount={0} schemaId={""}/> */}
     </div>
   );
 };
