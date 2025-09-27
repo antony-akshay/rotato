@@ -30,26 +30,51 @@ async function main() {
 
     console.log(`Deploying contracts with deployer account: ${deployer.address} on network: ${network.name}`);
 
-    deployed = await chainweb.deployContractOnChains({
-      name: "YourContract",
-      constructorArgs: [deployer.address],
-    });
-    if (deployed.deployments.length === 0) {
-      console.log("No contracts deployed");
-      process.exit(0);
-      return;
-    }
+    // deployed = await chainweb.deployContractOnChains({
+    //   name: "YourContract",
+    //   constructorArgs: [deployer.address],
+    // });
+    // if (deployed.deployments.length === 0) {
+    //   console.log("No contracts deployed");
+    //   process.exit(0);
+    //   return;
+    // }
 
-    // Filter out failed deployments
-    successfulDeployments = deployed.deployments.filter(d => d !== null);
+    const contractsToDeploy = [
+  { name: "ChitChainManager", args: ["0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344"] },
+  { name: "ChitChainRegistry", args: [] },
+  { name: "ChitChainToken", args: [] },
+  { name: "ChitChainInsurance", args: [] },
+];
 
-    if (successfulDeployments.length > 0) {
-      console.log(`Contract successfully deployed to ${successfulDeployments.length} chains`);
+for (const contract of contractsToDeploy) {
+  console.log(`🚀 Deploying ${contract.name}...`);
 
-      // Generate file for local deployments
-      await generateDeployedContractsFile(successfulDeployments);
-      process.exit(0);
-    }
+  const deployed = await chainweb.deployContractOnChains({
+    name: contract.name,
+    constructorArgs: contract.args,
+  });
+
+  const successfulDeployments = deployed.deployments.filter(d => d !== null);
+
+  if (successfulDeployments.length > 0) {
+    console.log(`✅ ${contract.name} deployed to ${successfulDeployments.length} chains`);
+    await generateDeployedContractsFile(successfulDeployments);
+  } else {
+    console.error(`❌ Failed to deploy ${contract.name}`);
+  }
+}
+
+    // // Filter out failed deployments
+    // successfulDeployments = deployed.deployments.filter(d => d !== null);
+
+    // if (successfulDeployments.length > 0) {
+    //   console.log(`Contract successfully deployed to ${successfulDeployments.length} chains`);
+
+    //   // Generate file for local deployments
+    //   await generateDeployedContractsFile(successfulDeployments);
+    //   process.exit(0);
+    // }
   }
 
   // REMOTE: Use spawn pattern for encrypted keys

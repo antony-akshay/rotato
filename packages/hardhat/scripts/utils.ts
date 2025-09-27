@@ -7,7 +7,7 @@ import path from "path";
  * Generate deployedContracts.ts file for frontend
  */
 export async function generateDeployedContractsFile(deployments: any[]) {
-  const contractName: string = "YourContract";
+  const contractName: string = "ChitChainManager";
   const deploymentsByChain: Record<number, DeployedContractsOnChains> = {};
   const deployedContracts: Record<string, any> = {};
 

@@ -7,13 +7,13 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   "626000": {
     "YourContract": {
-      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       "abi": [
         {
           "inputs": [
             {
               "internalType": "address",
-              "name": "_owner",
+              "name": "_entropy",
               "type": "address"
             }
           ],
@@ -21,44 +21,951 @@ const deployedContracts = {
           "type": "constructor"
         },
         {
+          "inputs": [],
+          "name": "AlreadyBid",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "AlreadyContributed",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "AlreadyMember",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BidTooLow",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BiddingPeriodEnded",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "ContributionPeriodEnded",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InsufficientBalance",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidAmount",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidPeriod",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "MaxMembersReached",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NoBidsReceived",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotEligibleToBid",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "OnlyMember",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "OnlyOrganizer",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SchemeNotActive",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "WinnerAlreadySelected",
+          "type": "error"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "bidder",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "BidPlaced",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "contributor",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "ContributionMade",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "member",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "DividendDistributed",
+          "type": "event"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
               "indexed": true,
               "internalType": "address",
-              "name": "greetingSetter",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "Paused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint64",
+              "name": "sequenceNumber",
+              "type": "uint64"
+            }
+          ],
+          "name": "RandomnessRequested",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "SchemeCompleted",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "organizer",
               "type": "address"
             },
             {
               "indexed": false,
               "internalType": "string",
-              "name": "newGreeting",
+              "name": "schemeName",
               "type": "string"
-            },
+            }
+          ],
+          "name": "SchemeCreated",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
             {
               "indexed": false,
-              "internalType": "bool",
-              "name": "premium",
-              "type": "bool"
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "Unpaused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "UserJoinedScheme",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "UserRegistered",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "winner",
+              "type": "address"
             },
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "value",
+              "name": "amount",
               "type": "uint256"
             }
           ],
-          "name": "GreetingChange",
+          "name": "WinnerSelected",
           "type": "event"
         },
         {
           "inputs": [],
-          "name": "greeting",
+          "name": "BIDDING_PERIOD",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "CYCLE_LENGTH",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "INVESTMENT_PERIOD",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "MIN_BID_PERCENT",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "ORGANIZER_FEE_PERCENT",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            },
+            {
+              "internalType": "address",
+              "name": "provider",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "randomNumber",
+              "type": "bytes32"
+            }
+          ],
+          "name": "_entropyCallback",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "contribute",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_schemeName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_monthlyAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_totalCycles",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_maxMembers",
+              "type": "uint256"
+            }
+          ],
+          "name": "createScheme",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "cycleData",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "totalPool",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contributionsReceived",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "winner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "winningBid",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isComplete",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint64",
+              "name": "entropySequenceNumber",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "emergencyWithdraw",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint64",
+              "name": "",
+              "type": "uint64"
+            }
+          ],
+          "name": "entropyCycle",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint64",
+              "name": "",
+              "type": "uint64"
+            }
+          ],
+          "name": "entropyToScheme",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getCurrentCyclePeriod",
           "outputs": [
             {
               "internalType": "string",
               "name": "",
               "type": "string"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            }
+          ],
+          "name": "getCycleBidders",
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            }
+          ],
+          "name": "getCycleContributors",
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            }
+          ],
+          "name": "getCycleInfo",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "totalPool",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contributionsReceived",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "winner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "winningBid",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isComplete",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getRandomnessFee",
+          "outputs": [
+            {
+              "internalType": "uint128",
+              "name": "",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getScheme",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "schemeId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "organizer",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "schemeName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "monthlyAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalCycles",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "currentCycle",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxMembers",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "members",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "isActive",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "createdAt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lastCycleStart",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ChitChainManager.ChitScheme",
+              "name": "",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getSchemeMembers",
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "name": "getUserBid",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "name": "getUserProfile",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bool",
+                  "name": "isRegistered",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "participatingSchemes",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalEarnings",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalContributions",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "schemesWon",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ChitChainManager.UserProfile",
+              "name": "",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "name": "hasUserBid",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "name": "hasUserContributed",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "joinScheme",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "nextSchemeId",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
             }
           ],
           "stateMutability": "view",
@@ -79,7 +986,14 @@ const deployedContracts = {
         },
         {
           "inputs": [],
-          "name": "premium",
+          "name": "pause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "paused",
           "outputs": [
             {
               "internalType": "bool",
@@ -93,27 +1007,143 @@ const deployedContracts = {
         {
           "inputs": [
             {
-              "internalType": "string",
-              "name": "_newGreeting",
-              "type": "string"
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_bidAmount",
+              "type": "uint256"
             }
           ],
-          "name": "setGreeting",
+          "name": "placeBid",
           "outputs": [],
-          "stateMutability": "payable",
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
           "inputs": [],
-          "name": "totalCounter",
-          "outputs": [
+          "name": "registerUser",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "renounceOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
             {
               "internalType": "uint256",
               "name": "",
               "type": "uint256"
             }
           ],
+          "name": "schemes",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "organizer",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "schemeName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "monthlyAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalCycles",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "currentCycle",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxMembers",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isActive",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lastCycleStart",
+              "type": "uint256"
+            }
+          ],
           "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "selectWinner",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "startNewCycle",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "transferOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "unpause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -124,22 +1154,30 @@ const deployedContracts = {
               "type": "address"
             }
           ],
-          "name": "userGreetingCounter",
+          "name": "users",
           "outputs": [
             {
+              "internalType": "bool",
+              "name": "isRegistered",
+              "type": "bool"
+            },
+            {
               "internalType": "uint256",
-              "name": "",
+              "name": "totalEarnings",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalContributions",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "schemesWon",
               "type": "uint256"
             }
           ],
           "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "withdraw",
-          "outputs": [],
-          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -151,13 +1189,13 @@ const deployedContracts = {
   },
   "626001": {
     "YourContract": {
-      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       "abi": [
         {
           "inputs": [
             {
               "internalType": "address",
-              "name": "_owner",
+              "name": "_entropy",
               "type": "address"
             }
           ],
@@ -165,44 +1203,951 @@ const deployedContracts = {
           "type": "constructor"
         },
         {
+          "inputs": [],
+          "name": "AlreadyBid",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "AlreadyContributed",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "AlreadyMember",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BidTooLow",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "BiddingPeriodEnded",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "ContributionPeriodEnded",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InsufficientBalance",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidAmount",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "InvalidPeriod",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "MaxMembersReached",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NoBidsReceived",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "NotEligibleToBid",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "OnlyMember",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "OnlyOrganizer",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "SchemeNotActive",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "WinnerAlreadySelected",
+          "type": "error"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "bidder",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "BidPlaced",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "contributor",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "ContributionMade",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "member",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "DividendDistributed",
+          "type": "event"
+        },
+        {
           "anonymous": false,
           "inputs": [
             {
               "indexed": true,
               "internalType": "address",
-              "name": "greetingSetter",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "Paused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint64",
+              "name": "sequenceNumber",
+              "type": "uint64"
+            }
+          ],
+          "name": "RandomnessRequested",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "SchemeCompleted",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "organizer",
               "type": "address"
             },
             {
               "indexed": false,
               "internalType": "string",
-              "name": "newGreeting",
+              "name": "schemeName",
               "type": "string"
-            },
+            }
+          ],
+          "name": "SchemeCreated",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
             {
               "indexed": false,
-              "internalType": "bool",
-              "name": "premium",
-              "type": "bool"
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "Unpaused",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "UserJoinedScheme",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "name": "UserRegistered",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "cycle",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "winner",
+              "type": "address"
             },
             {
               "indexed": false,
               "internalType": "uint256",
-              "name": "value",
+              "name": "amount",
               "type": "uint256"
             }
           ],
-          "name": "GreetingChange",
+          "name": "WinnerSelected",
           "type": "event"
         },
         {
           "inputs": [],
-          "name": "greeting",
+          "name": "BIDDING_PERIOD",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "CYCLE_LENGTH",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "INVESTMENT_PERIOD",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "MIN_BID_PERCENT",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "ORGANIZER_FEE_PERCENT",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            },
+            {
+              "internalType": "address",
+              "name": "provider",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "randomNumber",
+              "type": "bytes32"
+            }
+          ],
+          "name": "_entropyCallback",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "contribute",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_schemeName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_monthlyAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_totalCycles",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_maxMembers",
+              "type": "uint256"
+            }
+          ],
+          "name": "createScheme",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "name": "cycleData",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "totalPool",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contributionsReceived",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "winner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "winningBid",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isComplete",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint64",
+              "name": "entropySequenceNumber",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "emergencyWithdraw",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint64",
+              "name": "",
+              "type": "uint64"
+            }
+          ],
+          "name": "entropyCycle",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint64",
+              "name": "",
+              "type": "uint64"
+            }
+          ],
+          "name": "entropyToScheme",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getCurrentCyclePeriod",
           "outputs": [
             {
               "internalType": "string",
               "name": "",
               "type": "string"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            }
+          ],
+          "name": "getCycleBidders",
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            }
+          ],
+          "name": "getCycleContributors",
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            }
+          ],
+          "name": "getCycleInfo",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "totalPool",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contributionsReceived",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "winner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "winningBid",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isComplete",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getRandomnessFee",
+          "outputs": [
+            {
+              "internalType": "uint128",
+              "name": "",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getScheme",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "schemeId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "organizer",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "schemeName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "monthlyAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalCycles",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "currentCycle",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxMembers",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "members",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "isActive",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "createdAt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lastCycleStart",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ChitChainManager.ChitScheme",
+              "name": "",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "getSchemeMembers",
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "name": "getUserBid",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "name": "getUserProfile",
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bool",
+                  "name": "isRegistered",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "participatingSchemes",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalEarnings",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalContributions",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "schemesWon",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ChitChainManager.UserProfile",
+              "name": "",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "name": "hasUserBid",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cycle",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "name": "hasUserContributed",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "joinScheme",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "nextSchemeId",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
             }
           ],
           "stateMutability": "view",
@@ -223,7 +2168,14 @@ const deployedContracts = {
         },
         {
           "inputs": [],
-          "name": "premium",
+          "name": "pause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "paused",
           "outputs": [
             {
               "internalType": "bool",
@@ -237,27 +2189,143 @@ const deployedContracts = {
         {
           "inputs": [
             {
-              "internalType": "string",
-              "name": "_newGreeting",
-              "type": "string"
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_bidAmount",
+              "type": "uint256"
             }
           ],
-          "name": "setGreeting",
+          "name": "placeBid",
           "outputs": [],
-          "stateMutability": "payable",
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
           "inputs": [],
-          "name": "totalCounter",
-          "outputs": [
+          "name": "registerUser",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "renounceOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
             {
               "internalType": "uint256",
               "name": "",
               "type": "uint256"
             }
           ],
+          "name": "schemes",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "schemeId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "organizer",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "schemeName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "monthlyAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalCycles",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "currentCycle",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxMembers",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isActive",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createdAt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lastCycleStart",
+              "type": "uint256"
+            }
+          ],
           "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "selectWinner",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_schemeId",
+              "type": "uint256"
+            }
+          ],
+          "name": "startNewCycle",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "transferOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "unpause",
+          "outputs": [],
+          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
@@ -268,22 +2336,30 @@ const deployedContracts = {
               "type": "address"
             }
           ],
-          "name": "userGreetingCounter",
+          "name": "users",
           "outputs": [
             {
+              "internalType": "bool",
+              "name": "isRegistered",
+              "type": "bool"
+            },
+            {
               "internalType": "uint256",
-              "name": "",
+              "name": "totalEarnings",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalContributions",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "schemesWon",
               "type": "uint256"
             }
           ],
           "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "withdraw",
-          "outputs": [],
-          "stateMutability": "nonpayable",
           "type": "function"
         },
         {
