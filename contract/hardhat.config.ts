@@ -1,9 +1,10 @@
 import type { HardhatUserConfig } from "hardhat/config";
 
-import "@nomicfoundation/hardhat-toolbox-mocha-ethers";
-import "@nomicfoundation/hardhat-ignition-ethers";
+import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
+import hardhatIgnitionEthersPlugin from "@nomicfoundation/hardhat-ignition-ethers";
 
 const config: HardhatUserConfig = {
+  plugins: [hardhatToolboxMochaEthersPlugin, hardhatIgnitionEthersPlugin],
   solidity: {
     version: "0.8.28",
     settings: {
@@ -17,9 +18,9 @@ const config: HardhatUserConfig = {
     kadenaTestnet: {
       type: "http",
       url: "https://evm-testnet.chainweb.com/chainweb/0.0/evm-testnet/chain/20/evm/rpc",
-      accounts: process.env.KADENA_PRIVATE_KEY
-        ? [process.env.KADENA_PRIVATE_KEY]
-        : [],
+      accounts: [
+        "ae5081ae3b94b43abe00c09a4e401520968621b2de45fb0b576ffa6df2b3301a",
+      ],
       chainId: 5920,
     },
   },
