@@ -15,5 +15,9 @@
     "hardhat": "^3.0.6",
     "mocha": "^11.7.2",
     "typescript": "~5.8.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "@pythnetwork/entropy-sdk-solidity": "^2.0.0"
   }
 }

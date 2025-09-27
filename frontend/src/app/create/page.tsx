@@ -4,6 +4,11 @@ import { useState } from "react";
 import CreateChittyForm from "@/components/CreateChittyForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalculatorIcon } from "@heroicons/react/24/outline";
+import BidModalDemo from "../../components/BidModalDemo";
+import ChittySchemeCard from "../../components/ChittySchemeCard";
+import ChittyWinnerModalDemo from "../../components/ChittyWinnerModalDemo";
+import JoinChittyCard from "../../components/JoinChittyCard";
+import PayChittyCard from "../../components/PayChittyCard";
 
 const CreatePage = () => {
   const [formData, setFormData] = useState({
@@ -66,6 +71,11 @@ const CreatePage = () => {
           </Card>
         </div>
       </div>
+      <BidModalDemo/>
+      <ChittySchemeCard/>
+      <ChittyWinnerModalDemo/>
+      <JoinChittyCard chitty_name={""} owner={""} totalCycles={0} monthly_amount={0} contribute_amount={0} />
+      <PayChittyCard chitty_name={""} time_period={""} monthly_amount={0} contribute_amount={0} schemaId={""}/>
     </div>
   );
 };
