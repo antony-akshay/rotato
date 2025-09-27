@@ -101,7 +101,7 @@ export default function Home() {
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="bg-base-200 border border-border shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105"
+                className="bg-card-500 border border-border shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105"
               >
                 <CardHeader className="text-center">
                   <div className="w-12 h-12 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center mx-auto mb-4">

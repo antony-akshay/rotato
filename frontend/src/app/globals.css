@@ -39,8 +39,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1a1b2c;
     --foreground: #ededed;
+
+    --card: #14171F;
+    --card-foreground: #F8FAFC;
 
     --primary: #3b82f6; /* lighter blue for dark mode */
     --accent: #a855f7;
