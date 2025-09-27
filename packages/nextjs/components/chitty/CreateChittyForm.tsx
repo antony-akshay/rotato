@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import ChitChainManager from "../../../hardhat/artifacts/contracts/rotato.sol/ChitChainManager.json";
 import { AlertCircle, Calendar, CheckCircle, DollarSign, Target, Users } from "lucide-react";
+import { useWriteContract } from "wagmi";
 
 const CreateChittyForm = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +13,8 @@ const CreateChittyForm = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const { writeContractAsync, isPending, isError, error, data } = useWriteContract();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,10 +56,27 @@ const CreateChittyForm = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+
     try {
-      // Instead of contract call, just log
-      console.log("Form submitted:", formData);
+      const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+      const contractAbi = ChitChainManager.abi;
+
       setSubmitSuccess(true);
+
+      const tx = await writeContractAsync({
+        address: contractAddress,
+        abi: contractAbi,
+        functionName: "createScheme",
+        args: [
+          formData.schemeName,
+          BigInt(formData.monthlyAmount),
+          BigInt(formData.totalCycles),
+          BigInt(formData.maxMembers),
+        ],
+        value: 0n, // if scheme requires deposit
+      });
+
+      console.log("Tx sent:", tx);
 
       setTimeout(() => {
         setFormData({
@@ -66,6 +87,8 @@ const CreateChittyForm = () => {
         });
         setSubmitSuccess(false);
       }, 2000);
+    } catch (err) {
+      console.error("Transaction failed:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -179,7 +202,7 @@ const CreateChittyForm = () => {
                 <div className="pt-4">
                   <button
                     onClick={handleSubmit}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isPending}
                     className={`w-full py-4 px-6 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
                       isSubmitting
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed"
@@ -188,7 +211,7 @@ const CreateChittyForm = () => {
                           : "bg-green-600 hover:bg-green-700 text-white hover:shadow-lg transform hover:-translate-y-0.5"
                     }`}
                   >
-                    {isSubmitting ? (
+                    {isSubmitting || isPending ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                         Creating Scheme...

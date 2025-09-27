@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { CheckCircle, Clock, Coins, Shield, TrendingUp, Users } from "lucide-react";
 import type { NextPage } from "next";
+import CreateChittyForm from "~~/components/chitty/CreateChittyForm";
 
 const Home: NextPage = () => {
   const features = [
@@ -145,7 +146,7 @@ const Home: NextPage = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto w-fit">
               {benefits.map((benefit, index) => (
                 <div key={index} className="flex items-center gap-3">
                   <CheckCircle className="w-6 h-6 text-accent flex-shrink-0" />
@@ -184,6 +185,8 @@ const Home: NextPage = () => {
           </div>
         </div>
       </section>
+
+      <CreateChittyForm />
     </div>
   );
 };
