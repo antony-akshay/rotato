@@ -26,6 +26,7 @@ const JoinChittyCard: React.FC<JoinChittyCardProps> = ({
     if ((e.target as HTMLElement).closest('.join-button')) {
       return;
     }
+    // return chitty_scheme_card
     onCardClick?.();
   };
 
@@ -36,7 +37,7 @@ const JoinChittyCard: React.FC<JoinChittyCardProps> = ({
 
   return (
     <div 
-      className="mt-20 w-80 bg-gradient-to-br from-blue-50 to-indigo-100 border-2 border-indigo-300 rounded-2xl p-6 cursor-pointer hover:from-blue-100 hover:to-indigo-200 hover:border-indigo-400 transition-all duration-300 relative max-w-md shadow-lg hover:shadow-xl"
+      className="mt-20 relative w-[340px] bg-gradient-to-br from-blue-50 to-indigo-100 border-2 border-indigo-300 rounded-2xl p-6 cursor-pointer hover:from-blue-100 hover:to-indigo-200 hover:border-indigo-400 transition-all duration-300 relative max-w-md shadow-lg hover:shadow-xl"
       onClick={handleCardClick}
     >
       <div className="space-y-2 mb-4">

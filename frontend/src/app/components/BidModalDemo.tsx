@@ -264,9 +264,9 @@ const BidModalDemo: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className=" bg-grey-100 flex items-center justify-center p-4">
       <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4">Chitty Bid Modal Demo</h1>
+        <h1 className="text-2xl font-bold mb-4 text-white">Chitty Name</h1>
         <button onClick={() => setIsModalOpen(true)} className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
           Open Bid Modal
         </button>
