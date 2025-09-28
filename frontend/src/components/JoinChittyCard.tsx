@@ -33,7 +33,7 @@ const JoinChittyCard: React.FC<JoinChittyCardProps> = ({
 
   return (
     <div
-      className="flex flex-col justify-between rounded-2xl border-2 border-indigo-300 bg-gradient-to-br from-blue-50 to-indigo-100 p-6 cursor-pointer shadow-lg transition-all duration-300 hover:from-blue-100 hover:to-indigo-200 hover:border-indigo-400 hover:shadow-xl"
+      className="flex flex-col justify-between rounded-2xl border-2 border-indigo-300 from-blue-50 to-indigo-100 p-6 cursor-pointer shadow-lg transition-all duration-300 hover:from-blue-100 hover:to-indigo-200 hover:border-indigo-400 hover:shadow-xl"
       onClick={handleCardClick}
     >
       {/* Card Content */}

@@ -8,6 +8,8 @@ import {
   CheckCircleIcon,
   AdjustmentsVerticalIcon as TargetIcon,
 } from "@heroicons/react/24/outline";
+import { useWriteContract, useWatchContractEvent, useReadContract } from "wagmi";
+import { ChitChainManagerABI } from "@/contracts/ChitChainManage";
 
 interface FormData {
   schemeName: string;
@@ -25,13 +27,33 @@ const CreateChittyForm: React.FC<CreateChittyFormProps> = ({ formData, setFormDa
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
+  const { writeContract } = useWriteContract();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = () => {
-    setIsSubmitting(true);
+    const monthlyAmount = BigInt(formData.monthlyAmount || "0");
+    const totalCycles = BigInt(formData.totalCycles || "0");
+    const maxMembers = BigInt(formData.maxMembers || "0");
+
+    try{
+      const writeCn = writeContract({
+         address: "0x9B4e05a10D6D4779d7c37B6e17AA9633a45BC99E",
+         abi: ChitChainManagerABI,
+         functionName: "createScheme",
+         args: [formData.schemeName, monthlyAmount, totalCycles, maxMembers],
+       });
+
+       console.log(writeCn);
+
+      setIsSubmitting(true);
+    }catch(error){
+      console.log(error);
+    }
+
     setTimeout(() => {
       setSubmitSuccess(true);
       setFormData({
@@ -45,6 +67,31 @@ const CreateChittyForm: React.FC<CreateChittyFormProps> = ({ formData, setFormDa
     }, 1000);
   };
 
+  // function SchemeTracker() {
+  //   useWatchContractEvent({
+  //     address: '0x9B4e05a10D6D4779d7c37B6e17AA9633a45BC99E',
+  //     abi: ChitChainManagerABI,
+  //     eventName: 'SchemeCreated',
+  //     onLogs(logs) {
+  //       logs.forEach((log) => {
+  //         const schemeId = log.args.schemeId; // This is the new scheme ID
+  //         console.log('New Scheme Created with ID:', schemeId);
+  //         // Add the schemeId to your application's state or database
+  //       });
+  //     },
+  //   });
+  //   return null; // This component doesn't render anything
+  // }
+
+  // function SchemeCard({ schemeId }) {
+  //   const { data: scheme, isError, isLoading } = useReadContract({
+  //     address: '0x9B4e05a10D6D4779d7c37B6e17AA9633a45BC99E',
+  //     abi: ChitChainManagerABI,
+  //     functionName: 'getScheme',
+  //     args: [schemeId],
+  //   });
+  // }
+  
   return (
     <div className="rounded-lg shadow-lg border bg-gray-800 border-gray-700 p-6 space-y-6">
       {/* Scheme Name */}

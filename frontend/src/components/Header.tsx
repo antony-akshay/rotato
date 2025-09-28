@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
 
@@ -10,8 +11,16 @@ const Header = () => {
           <span className="font-bold text-xl">Rotato</span>
         </Link>
 
-        <div>
-            <ConnectButton chainStatus="none"/>
+        <div className="flex items-center gap-4">
+          <Button>
+            <Link href="/mychits" className="flex items-center gap-2">
+              My Chits
+            </Link>
+          </Button>
+
+          <div>
+              <ConnectButton chainStatus="none"/>
+          </div>
         </div>
       </div>
     </nav>
